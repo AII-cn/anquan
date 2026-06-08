@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>激活码生成器 - 安管人员刷题系统</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,'Microsoft YaHei',sans-serif;background:#f0f2f5;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.card{background:#fff;border-radius:12px;padding:24px;max-width:500px;width:90%;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+h2{font-size:20px;margin-bottom:16px;color:#1a73e8}
+label{display:block;font-size:14px;color:#666;margin:12px 0 4px}
+input,textarea{width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:6px;font-size:16px;margin:4px 0;font-family:monospace}
+input:focus,textarea:focus{outline:none;border-color:#1a73e8}
+.btn{padding:10px 20px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:500;margin:4px}
+.btn-primary{background:#1a73e8;color:#fff}
+.btn-primary:hover{background:#1557b0}
+.btn-success{background:#0d904f;color:#fff}
+.result{margin-top:16px;padding:16px;background:#e8f0fe;border-radius:8px;font-family:monospace;font-size:18px;text-align:center;letter-spacing:2px}
+.note{margin-top:12px;font-size:12px;color:#999}
+.master-keys{margin-top:16px;padding:12px;background:#fff8e1;border-radius:8px;font-size:13px}
+.master-keys code{background:#ffe0b2;padding:2px 6px;border-radius:3px}
+</style>
+</head>
+<body>
+<div class="card">
+    <h2>🔑 激活码生成器</h2>
+    <p style="font-size:13px;color:#666">用于生成一机一码的激活码。用户提供机器码后，输入下方生成对应激活码。</p>
+
+    <label>用户机器码：</label>
+    <input type="text" id="machineInput" placeholder="输入12位机器码（如：A1B2C3D4E5F6）" maxlength="12" oninput="generate()">
+
+    <label>生成的激活码：</label>
+    <div class="result" id="result">等待输入机器码...</div>
+
+    <button class="btn btn-primary" onclick="copyCode()">📋 复制激活码</button>
+
+    <div class="master-keys">
+        <strong>🔧 万能激活码（不限制机器码）：</strong><br>
+        <code>HNJZ-ADMIN-MASTER-KEY1</code><br>
+        <code>HNJZ-2024-SAFETY-EXAM</code>
+    </div>
+
+    <div class="note">
+        ⚠️ 本工具仅供管理员使用。每个激活码绑定一台设备。<br>
+        生成的激活码格式：HNJZ-XXXX-XXXX-XXXX
+    </div>
+</div>
+
+<script>
+function generate() {
+    const machineCode = document.getElementById('machineInput').value.trim().toUpperCase();
+    if (!machineCode || machineCode.length < 8) {
+        document.getElementById('result').textContent = '等待输入机器码...';
+        return;
+    }
+
+    // Same algorithm as in main app
+    let seed = parseInt(machineCode, 16);
+    if (isNaN(seed)) seed = 0;
+    for (let i = 0; i < machineCode.length; i++) {
+        seed = ((seed << 5) - seed) + machineCode.charCodeAt(i);
+    }
+
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = '';
+    seed = Math.abs(seed);
+    for (let i = 0; i < 16; i++) {
+        seed = (seed * 1103515245 + 12345) & 0x7FFFFFFF;
+        code += chars[seed % chars.length];
+        if (i === 3 || i === 7 || i === 11) code += '-';
+    }
+    const fullCode = 'HNJZ-' + code.substring(5);
+    document.getElementById('result').textContent = fullCode;
+}
+
+function copyCode() {
+    const code = document.getElementById('result').textContent;
+    if (code && code !== '等待输入机器码...') {
+        navigator.clipboard.writeText(code).then(() => {
+            alert('激活码已复制到剪贴板！');
+        });
+    }
+}
+</script>
+</body>
+</html>

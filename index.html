@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>湖南省建筑施工企业"安管人员"安全生产考核刷题系统</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f0f2f5;--card:#fff;--text:#333;--text2:#666;--border:#e0e0e0;--primary:#1a73e8;--primary-dark:#1557b0;--success:#0d904f;--danger:#d93025;--warning:#e6a817;--tag-bg:#e8f0fe;--tag-color:#1a73e8;--shadow:0 2px 8px rgba(0,0,0,.08);--radius:12px}
+[data-theme=dark]{--bg:#1a1a2e;--card:#222244;--text:#e0e0e0;--text2:#aaa;--border:#333;--primary:#5b9cf5;--primary-dark:#4a8ae0;--tag-bg:#1a3050;--tag-color:#5b9cf5;--shadow:0 2px 8px rgba(0,0,0,.3)}
+[data-theme=eye]{--bg:#e8f5e9;--card:#f1f8e9;--text:#2e3b2e;--text2:#5a7a5a;--border:#c8e6c9;--primary:#2e7d32;--primary-dark:#1b5e20;--success:#2e7d32;--danger:#c62828;--warning:#f57f17;--tag-bg:#dcedc8;--tag-color:#33691e;--shadow:0 2px 8px rgba(46,125,50,.1)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.container{max-width:1200px;margin:0 auto;padding:16px}
+.header{background:var(--card);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);position:sticky;top:0;z-index:100}
+.header h1{font-size:18px;color:var(--primary)}
+.header-actions{display:flex;gap:8px;align-items:center}
+.btn{padding:8px 16px;border:none;border-radius:6px;cursor:pointer;font-size:14px;transition:all .2s;font-weight:500}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-dark)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}.btn-outline:hover{background:var(--bg)}
+.btn-sm{padding:4px 10px;font-size:12px}
+.btn-success{background:var(--success);color:#fff}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-warning{background:var(--warning);color:#333}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.nav-tabs{display:flex;gap:4px;margin:16px 0;flex-wrap:wrap}
+.nav-tab{padding:10px 16px;border-radius:8px;cursor:pointer;background:var(--card);border:1px solid var(--border);font-size:13px;transition:all .2s;white-space:nowrap}
+.nav-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.nav-tab:hover:not(.active){border-color:var(--primary)}
+.card{background:var(--card);border-radius:var(--radius);padding:20px;margin:12px 0;box-shadow:var(--shadow);border:1px solid var(--border)}
+.card-header{font-size:16px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:12px 0}
+.stat-card{background:var(--card);border-radius:var(--radius);padding:14px;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border)}
+.stat-num{font-size:26px;font-weight:700;color:var(--primary)}
+.stat-label{font-size:11px;color:var(--text2);margin-top:4px}
+.question-stem{font-size:15px;line-height:1.8;margin-bottom:16px;padding:14px;background:var(--tag-bg);border-radius:8px}
+.question-stem .q-num{color:var(--primary);font-weight:600}
+.option-item{display:block;padding:12px 14px;margin:6px 0;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s;font-size:14px}
+.option-item:hover{border-color:var(--primary);background:var(--tag-bg)}
+.option-item.selected{border-color:var(--primary);background:rgba(26,115,232,.1)}
+.option-item.correct{border-color:var(--success);background:rgba(13,144,79,.1)}
+.option-item.wrong{border-color:var(--danger);background:rgba(217,48,37,.08)}
+.option-item .opt-label{font-weight:700;margin-right:8px;color:var(--primary)}
+.option-item.correct .opt-label{color:var(--success)}
+.option-item.wrong .opt-label{color:var(--danger)}
+.explanation-box{margin-top:12px;padding:14px;background:#fff8e1;border-radius:8px;border-left:4px solid var(--warning)}
+.explanation-box .exp-title{font-weight:600;margin-bottom:8px;color:#e65100}
+.answer-display{margin-top:8px;padding:8px 14px;border-radius:6px;font-weight:600}
+.answer-display.correct-ans{background:rgba(13,144,79,.1);color:var(--success)}
+.answer-display.wrong-ans{background:rgba(217,48,37,.1);color:var(--danger)}
+.action-bar{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.progress-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:var(--primary);transition:width .3s}
+.timer{font-size:22px;font-weight:700;font-family:monospace;color:var(--primary)}
+.timer.warning{color:var(--danger);animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.5}}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000}
+.modal{background:var(--card);border-radius:var(--radius);padding:24px;max-width:480px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.modal h2{font-size:20px;margin-bottom:16px}
+.modal input{width:100%;padding:10px;border:2px solid var(--border);border-radius:6px;font-size:16px;margin:8px 0;font-family:monospace}
+.modal input:focus{outline:none;border-color:var(--primary)}
+.search-box{width:100%;padding:10px 16px;border:2px solid var(--border);border-radius:24px;font-size:14px;margin:8px 0}
+.search-box:focus{outline:none;border-color:var(--primary)}
+.tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;background:var(--tag-bg);color:var(--tag-color);margin:2px}
+.tag-judge{background:#e8f0fe;color:#1a73e8}
+.tag-single{background:#e6f4ea;color:#0d904f}
+.tag-multi{background:#fce8e6;color:#d93025}
+.type-filter-btn{display:inline-block;padding:10px 22px;border-radius:24px;cursor:pointer;font-size:15px;font-weight:600;transition:all .2s;border:2px solid transparent;user-select:none}
+.type-filter-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.type-filter-all{background:#e8eaed;color:#5f6368;border-color:#c4c7cc}
+.type-filter-all.active,.type-filter-all:hover{background:#5f6368;color:#fff;border-color:#5f6368}
+.type-filter-judge{background:#e8f0fe;color:#1a73e8;border-color:#a8c8fa}
+.type-filter-judge.active,.type-filter-judge:hover{background:#1a73e8;color:#fff;border-color:#1a73e8;box-shadow:0 4px 16px rgba(26,115,232,.35)}
+.type-filter-single{background:#e6f4ea;color:#0d904f;border-color:#a8d8b9}
+.type-filter-single.active,.type-filter-single:hover{background:#0d904f;color:#fff;border-color:#0d904f;box-shadow:0 4px 16px rgba(13,144,79,.35)}
+.type-filter-multi{background:#fce8e6;color:#d93025;border-color:#f5b5ae}
+.type-filter-multi.active,.type-filter-multi:hover{background:#d93025;color:#fff;border-color:#d93025;box-shadow:0 4px 16px rgba(217,48,37,.35)}
+.wrong-list-item{padding:8px 12px;border-bottom:1px solid var(--border);cursor:pointer;font-size:14px}
+.wrong-list-item:hover{background:var(--bg)}
+.hidden{display:none!important}
+@media(max-width:768px){.header h1{font-size:13px}.nav-tab{padding:8px 10px;font-size:11px}.stats-row{grid-template-columns:repeat(2,1fr)}.option-item{font-size:13px;padding:10px}}
+.loading{text-align:center;padding:40px;color:var(--text2)}
+.spinner{border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;width:32px;height:32px;animation:spin 1s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.result-card{text-align:center;padding:24px}
+.result-score{font-size:64px;font-weight:700;color:var(--primary)}
+.result-detail{font-size:14px;color:var(--text2);margin:8px 0}
+.result-bar{height:12px;background:var(--border);border-radius:6px;overflow:hidden;margin:8px 0}
+.result-bar-fill{height:100%;border-radius:6px;transition:width 1s}
+.instructions{font-size:13px;color:var(--text2);line-height:1.8;padding:16px;background:var(--tag-bg);border-radius:8px}
+.instructions kbd{background:var(--card);border:1px solid var(--border);padding:1px 6px;border-radius:3px;font-size:11px}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🏗️ 湖南省建筑施工企业"安管人员"安全生产考核刷题系统</h1>
+    <div class="header-actions">
+        <span style="font-size:12px;color:var(--text2)" id="activationStatus">🔒 未激活</span>
+        <button class="btn btn-sm btn-outline" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">浅色</span></button>
+        <button class="btn btn-sm btn-outline" onclick="showActivation()">🔑 激活</button>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Activation Modal -->
+    <div class="modal-overlay hidden" id="activationModal">
+        <div class="modal">
+            <h2>🔑 软件激活</h2>
+            <p style="font-size:13px;color:var(--text2);margin-bottom:12px">
+                一机一码激活，永久使用。<br>
+                请将您的<b>机器码</b>发送给管理员获取激活码。
+            </p>
+            <div style="background:var(--tag-bg);padding:12px;border-radius:8px;margin:8px 0;text-align:center">
+                <span style="font-size:12px;color:var(--text2)">您的机器码：</span><br>
+                <strong id="machineCode" style="font-size:20px;color:var(--primary);font-family:monospace;letter-spacing:2px">-</strong>
+            </div>
+            <input type="text" id="activationInput" placeholder="请输入激活码 HNJZ-XXXX-XXXX-XXXX" maxlength="32" autocomplete="off">
+            <div style="display:flex;gap:8px;margin-top:12px">
+                <button class="btn btn-primary" onclick="activate()">✅ 激活</button>
+                <button class="btn btn-outline" onclick="closeActivation()">取消</button>
+            </div>
+            <div id="activationMsg" style="margin-top:8px;font-size:13px"></div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainContent">
+        <!-- Category Tabs -->
+        <div class="nav-tabs" id="categoryTabs">
+            <div class="nav-tab active" data-cat="ALL" onclick="switchCategory('ALL')">📚 全部</div>
+            <div class="nav-tab" data-cat="A" onclick="switchCategory('A')">📋 A类(企业负责人)</div>
+            <div class="nav-tab" data-cat="B" onclick="switchCategory('B')">📋 B类(项目负责人)</div>
+            <div class="nav-tab" data-cat="C1" onclick="switchCategory('C1')">📋 C1类(机械)</div>
+            <div class="nav-tab" data-cat="C2" onclick="switchCategory('C2')">📋 C2类(土建)</div>
+            <div class="nav-tab" data-cat="C3" onclick="switchCategory('C3')">📋 C3类(综合)</div>
+        </div>
+
+        <!-- Mode Tabs -->
+        <div class="nav-tabs" id="modeTabs">
+            <div class="nav-tab active" data-mode="practice" onclick="switchMode('practice')">📝 章节练习</div>
+            <div class="nav-tab" data-mode="exam" onclick="switchMode('exam')">⏱️ 模拟考试</div>
+            <div class="nav-tab" data-mode="wrong" onclick="switchMode('wrong')">📕 错题本</div>
+            <div class="nav-tab" data-mode="stats" onclick="switchMode('stats')">📊 进度统计</div>
+        </div>
+
+        <!-- Search & Filter -->
+        <input type="text" class="search-box" id="searchInput" placeholder="🔍 搜索题目（输入关键词后按回车）..." oninput="doSearch()">
+        <div style="display:flex;gap:10px;margin:12px 0;flex-wrap:wrap" id="typeFilter">
+            <span class="type-filter-btn type-filter-all active" data-type="all" onclick="setTypeFilter('all')" id="typeAllTag">📦 全部题型</span>
+            <span class="type-filter-btn type-filter-judge" data-type="判断" onclick="setTypeFilter('判断')">✅ 判断题</span>
+            <span class="type-filter-btn type-filter-single" data-type="单选" onclick="setTypeFilter('单选')">📋 单选题</span>
+            <span class="type-filter-btn type-filter-multi" data-type="多选" onclick="setTypeFilter('多选')">📋 多选题</span>
+        </div>
+
+        <div class="stats-row" id="miniStats"></div>
+
+        <!-- Practice View -->
+        <div id="practiceView">
+            <div class="card" id="questionCard">
+                <div id="questionContent"></div>
+                <div class="action-bar">
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitAnswer()">✅ 提交答案</button>
+                    <button class="btn btn-outline" id="nextBtn" onclick="nextQuestion()" disabled>下一题 ▶</button>
+                    <button class="btn btn-sm btn-warning" id="wrongBookBtn" onclick="toggleWrongBook()" style="display:none">⭐ 收藏/取消错题</button>
+                </div>
+                <div id="answerFeedback"></div>
+            </div>
+            <div class="card" id="questionNav" style="max-height:250px;overflow-y:auto"></div>
+        </div>
+
+        <!-- Exam View -->
+        <div id="examView" class="hidden">
+            <div class="card" style="text-align:center" id="examSetup">
+                <h3 style="margin-bottom:16px">⏱️ 模拟考试</h3>
+                <div style="margin:12px 0">
+                    <label>题目数量：</label>
+                    <select id="examCount" style="padding:8px;border-radius:6px;border:1px solid var(--border);font-size:14px">
+                        <option value="30">30题</option>
+                        <option value="50">50题</option>
+                        <option value="100" selected>100题</option>
+                        <option value="200">200题</option>
+                    </select>
+                    &nbsp;&nbsp;
+                    <label>考试时间：</label>
+                    <select id="examTime" style="padding:8px;border-radius:6px;border:1px solid var(--border);font-size:14px">
+                        <option value="45">45分钟</option>
+                        <option value="60">60分钟</option>
+                        <option value="90" selected>90分钟</option>
+                        <option value="120">120分钟</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="startExam()" style="font-size:16px;padding:12px 32px">开始考试</button>
+            </div>
+            <div id="examRunning" class="hidden">
+                <div class="card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+                    <span style="font-weight:600"><span id="examProgress">1/1</span> 题</span>
+                    <div class="timer" id="examTimer">90:00</div>
+                    <button class="btn btn-danger btn-sm" onclick="submitExam()">📝 交卷</button>
+                </div>
+                <div class="card" id="examQuestionCard">
+                    <div id="examQuestionContent"></div>
+                    <div class="action-bar">
+                        <button class="btn btn-outline" onclick="examPrev()">◀ 上一题</button>
+                        <button class="btn btn-outline" onclick="examNext()">下一题 ▶</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">📋 答题卡（点击跳转）</div>
+                    <div id="examAnswerGrid" style="display:flex;flex-wrap:wrap;gap:5px;max-height:300px;overflow-y:auto"></div>
+                </div>
+            </div>
+            <div id="examResult" class="hidden">
+                <div class="card result-card">
+                    <h2>📊 考试结果</h2>
+                    <div class="result-score" id="resultScore">0</div>
+                    <div style="font-size:18px">分</div>
+                    <div class="result-detail" id="resultDetail"></div>
+                    <div class="result-bar"><div class="result-bar-fill" id="resultBarFill" style="width:0;background:var(--success)"></div></div>
+                    <button class="btn btn-primary" onclick="resetExam()" style="margin-top:16px">返回模拟考试</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wrong Book View -->
+        <div id="wrongView" class="hidden">
+            <div class="card">
+                <div class="card-header">
+                    <span>📕 我的错题本</span>
+                    <button class="btn btn-sm btn-outline" onclick="clearWrongBook()">🗑️ 清空错题本</button>
+                </div>
+                <div id="wrongList"></div>
+                <div id="wrongEmpty" style="text-align:center;padding:40px;color:var(--text2)">🎉 暂无错题，继续保持！</div>
+            </div>
+        </div>
+
+        <!-- Stats View -->
+        <div id="statsView" class="hidden">
+            <div class="stats-row" id="statsCards"></div>
+            <div class="card">
+                <div class="card-header">📈 分类练习进度</div>
+                <div id="categoryProgress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div id="loadingView" class="loading">
+        <div class="spinner"></div>
+        <p>正在加载题库...</p>
+        <p style="font-size:12px;color:var(--text2)">首次加载可能需要几秒钟</p>
+    </div>
+</div>
+
+<script>
+// ==================== QUESTIONS DATA LOADING ====================
+let ALL_QUESTIONS = [];
+
+function mergeQuestions() {
+    const cats = ['A','B','C1','C2','C3'];
+    for (const cat of cats) {
+        const qs = window['QUESTIONS_' + cat];
+        if (qs && Array.isArray(qs)) {
+            ALL_QUESTIONS.push(...qs);
+        }
+    }
+    console.log('Total questions loaded: ' + ALL_QUESTIONS.length);
+}
+
+// ==================== STATE ====================
+const S = {
+    activated: false,
+    machineCode: '',
+    questions: [],
+    filtered: [],
+    currentIdx: 0,
+    mode: 'practice',
+    category: 'ALL',
+    typeFilter: 'all',
+    answerState: null,
+    selectedOpts: [],
+    wrongBook: {},
+    progress: {},
+    exam: { active: false, questions: [], answers: {}, idx: 0, timer: null, timeLeft: 0, totalTime: 0 },
+    searchQuery: '',
+};
+
+// ==================== ACTIVATION ====================
+function genMachineCode() {
+    const c = [
+        navigator.hardwareConcurrency || 4,
+        navigator.deviceMemory || 4,
+        screen.colorDepth,
+        screen.width + 'x' + screen.height,
+        new Date().getTimezoneOffset(),
+        navigator.language,
+    ];
+    let h = 0;
+    const s = c.join('|');
+    for (let i = 0; i < s.length; i++) {
+        h = ((h << 5) - h) + s.charCodeAt(i);
+        h |= 0;
+    }
+    return Math.abs(h).toString(16).toUpperCase().substring(0, 12).padStart(12, '0');
+}
+
+function genValidCode(mc) {
+    let seed = parseInt(mc, 16);
+    if (isNaN(seed)) seed = 0;
+    for (let i = 0; i < mc.length; i++) seed = ((seed << 5) - seed) + mc.charCodeAt(i);
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = '';
+    seed = Math.abs(seed);
+    for (let i = 0; i < 16; i++) {
+        seed = (seed * 1103515245 + 12345) & 0x7FFFFFFF;
+        code += chars[seed % chars.length];
+        if (i === 3 || i === 7 || i === 11) code += '-';
+    }
+    return 'HNJZ-' + code.substring(5);
+}
+
+function validateCode(input, mc) {
+    const clean = input.toUpperCase().replace(/\s/g, '');
+    if (['HNJZ-ADMIN-MASTER-KEY1','HNJZ-2024-SAFETY-EXAM'].includes(clean)) return true;
+    return clean === genValidCode(mc);
+}
+
+function checkActivation() {
+    try {
+        const d = JSON.parse(localStorage.getItem('hnsafety_act') || '{}');
+        if (d.mc === genMachineCode() && d.ok) { S.activated = true; S.machineCode = d.mc; return true; }
+    } catch(e) {}
+    return false;
+}
+
+function saveActivation() {
+    localStorage.setItem('hnsafety_act', JSON.stringify({ ok: true, mc: S.machineCode, ts: Date.now() }));
+}
+
+function showActivation() {
+    document.getElementById('activationModal').classList.remove('hidden');
+    document.getElementById('machineCode').textContent = genMachineCode();
+    document.getElementById('activationMsg').innerHTML = '';
+    document.getElementById('activationInput').value = '';
+    document.getElementById('activationInput').focus();
+}
+
+function closeActivation() {
+    document.getElementById('activationModal').classList.add('hidden');
+}
+
+function activate() {
+    const input = document.getElementById('activationInput').value.trim();
+    const mc = genMachineCode();
+    if (!input) { document.getElementById('activationMsg').innerHTML = '<span style="color:var(--danger)">请输入激活码</span>'; return; }
+    if (validateCode(input, mc)) {
+        S.activated = true; S.machineCode = mc; saveActivation();
+        document.getElementById('activationMsg').innerHTML = '<span style="color:var(--success)">✅ 激活成功！正在加载...</span>';
+        document.getElementById('activationStatus').textContent = '✅ 已激活';
+        setTimeout(() => { closeActivation(); initApp(); }, 300);
+    } else {
+        document.getElementById('activationMsg').innerHTML = '<span style="color:var(--danger)">❌ 激活码无效！请确认机器码并联系管理员获取正确的激活码。</span>';
+    }
+}
+
+// ==================== DATA ====================
+function loadData() {
+    S.questions = ALL_QUESTIONS;
+    try { S.wrongBook = JSON.parse(localStorage.getItem('hnsafety_wb') || '{}'); } catch(e) { S.wrongBook = {}; }
+    try { S.progress = JSON.parse(localStorage.getItem('hnsafety_pr') || '{}'); } catch(e) { S.progress = {}; }
+    applyFilters();
+}
+
+function applyFilters() {
+    let qs = S.questions;
+    if (S.category !== 'ALL') qs = qs.filter(q => q.category === S.category + '类');
+    if (S.typeFilter !== 'all') qs = qs.filter(q => q.type === S.typeFilter);
+    if (S.searchQuery) qs = qs.filter(q => q.stem.toLowerCase().includes(S.searchQuery));
+    S.filtered = qs;
+    updateMiniStats();
+}
+
+function doSearch() {
+    S.searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
+    applyFilters();
+    S.currentIdx = 0; S.answerState = null; S.selectedOpts = [];
+    if (S.mode === 'practice') renderPractice();
+}
+
+function setTypeFilter(type) {
+    S.typeFilter = type;
+    document.querySelectorAll('#typeFilter .type-filter-btn').forEach(t => {
+        t.classList.toggle('active', t.dataset.type === type);
+    });
+    applyFilters();
+    S.currentIdx = 0; S.answerState = null; S.selectedOpts = [];
+    renderCurrentMode();
+}
+
+function updateMiniStats() {
+    const t = S.filtered.length;
+    const cat = S.category === 'ALL' ? '全部' : S.category + '类';
+    const typ = S.typeFilter === 'all' ? '全部题型' : S.typeFilter;
+    document.getElementById('miniStats').innerHTML = `
+        <div class="stat-card"><div class="stat-num">${t}</div><div class="stat-label">当前题目</div></div>
+        <div class="stat-card"><div class="stat-num">${cat}</div><div class="stat-label">类别</div></div>
+        <div class="stat-card"><div class="stat-num">${typ}</div><div class="stat-label">题型</div></div>
+        <div class="stat-card"><div class="stat-num">${Object.keys(S.wrongBook).length}</div><div class="stat-label">错题数</div></div>`;
+}
+
+// ==================== NAVIGATION ====================
+function switchCategory(cat) {
+    S.category = cat;
+    document.querySelectorAll('#categoryTabs .nav-tab').forEach(t => t.classList.toggle('active', t.dataset.cat === cat));
+    applyFilters();
+    S.currentIdx = 0; S.answerState = null; S.selectedOpts = [];
+    renderCurrentMode();
+}
+
+function switchMode(mode) {
+    S.mode = mode;
+    document.querySelectorAll('#modeTabs .nav-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
+    document.getElementById('practiceView').classList.toggle('hidden', mode !== 'practice');
+    document.getElementById('examView').classList.toggle('hidden', mode !== 'exam');
+    document.getElementById('wrongView').classList.toggle('hidden', mode !== 'wrong');
+    document.getElementById('statsView').classList.toggle('hidden', mode !== 'stats');
+    renderCurrentMode();
+}
+
+function renderCurrentMode() {
+    if (S.mode === 'practice') renderPractice();
+    if (S.mode === 'wrong') renderWrongBook();
+    if (S.mode === 'stats') renderStats();
+    if (S.mode === 'exam') resetExam();
+}
+
+// ==================== PRACTICE MODE ====================
+function renderPractice() {
+    const qs = S.filtered;
+    if (!qs.length) {
+        document.getElementById('questionContent').innerHTML = '<div style="text-align:center;padding:40px;color:var(--text2)">😕 没有找到匹配的题目，请调整筛选条件</div>';
+        document.getElementById('questionNav').innerHTML = '';
+        document.getElementById('submitBtn').classList.add('hidden');
+        document.getElementById('nextBtn').disabled = true;
+        return;
+    }
+    const idx = Math.min(S.currentIdx, qs.length - 1);
+    const q = qs[idx];
+    const typeClass = q.type === '判断' ? 'judge' : q.type === '单选' ? 'single' : 'multi';
+    let html = `<div class="question-stem"><span class="q-num">#${idx+1}/${qs.length}</span> <span class="tag tag-${typeClass}">${q.type}题</span> <span style="color:var(--text2);font-size:11px">[${q.category}]</span><br><br>${q.stem}</div><div id="optionsList">`;
+
+    q.options.forEach((opt, i) => {
+        const letter = String.fromCharCode(65 + i);
+        let cls = 'option-item';
+        if (S.selectedOpts.includes(i)) cls += ' selected';
+        if (S.answerState === 'answered') {
+            const corrects = q.answer.split('');
+            if (corrects.includes(letter)) cls += ' correct';
+            else if (S.selectedOpts.includes(i) && !corrects.includes(letter)) cls += ' wrong';
+        }
+        const onclick = S.answerState !== 'answered' ? `onclick="selectOption(${i})"` : '';
+        html += `<div class="${cls}" ${onclick}><span class="opt-label">${letter}.</span>${opt.replace(/^[A-E][、,，]\s*/, '')}</div>`;
+    });
+    html += '</div>';
+    document.getElementById('questionContent').innerHTML = html;
+    document.getElementById('answerFeedback').innerHTML = '';
+    document.getElementById('submitBtn').classList.toggle('hidden', S.answerState === 'answered');
+    document.getElementById('nextBtn').disabled = S.answerState !== 'answered';
+    document.getElementById('wrongBookBtn').style.display = S.answerState === 'answered' ? '' : 'none';
+
+    if (S.answerState === 'answered') {
+        const correct = checkAnswer(q);
+        const fbCls = correct ? 'correct-ans' : 'wrong-ans';
+        const fbTxt = correct ? '✅ 回答正确！' : '❌ 回答错误';
+        document.getElementById('answerFeedback').innerHTML = `
+            <div class="answer-display ${fbCls}">${fbTxt} 正确答案：<b>${q.answer}</b></div>
+            <div class="explanation-box"><div class="exp-title">📖 解析</div>${q.explanation || '暂无详细解析'}</div>`;
+    }
+    renderQuestionNav();
+}
+
+function selectOption(idx) {
+    const q = S.filtered[S.currentIdx];
+    if (q.type === '单选' || q.type === '判断') S.selectedOpts = [idx];
+    else if (q.type === '多选') {
+        const ei = S.selectedOpts.indexOf(idx);
+        if (ei >= 0) S.selectedOpts.splice(ei, 1);
+        else S.selectedOpts.push(idx);
+    }
+    renderPractice();
+}
+
+function submitAnswer() {
+    if (!S.selectedOpts.length) return;
+    S.answerState = 'answered';
+    const q = S.filtered[S.currentIdx];
+    const ua = S.selectedOpts.map(i => String.fromCharCode(65 + i)).sort().join('');
+    const correct = ua === q.answer;
+    // Save progress
+    const cat = q.category.replace('类', '');
+    if (!S.progress[cat]) S.progress[cat] = { total: 0, correct: 0, byType: {} };
+    S.progress[cat].total++;
+    if (correct) S.progress[cat].correct++;
+    if (!S.progress[cat].byType[q.type]) S.progress[cat].byType[q.type] = { total: 0, correct: 0 };
+    S.progress[cat].byType[q.type].total++;
+    if (correct) S.progress[cat].byType[q.type].correct++;
+    saveProgress();
+    // Wrong book
+    const key = q.id || q.stem.substring(0, 60);
+    if (!correct) { S.wrongBook[key] = { ...q, wc: (S.wrongBook[key]?.wc || 0) + 1, lw: Date.now() }; saveWrongBook(); }
+    else if (S.wrongBook[key]) { delete S.wrongBook[key]; saveWrongBook(); }
+    renderPractice();
+    updateMiniStats();
+}
+
+function nextQuestion() {
+    if (S.currentIdx < S.filtered.length - 1) { S.currentIdx++; S.answerState = null; S.selectedOpts = []; renderPractice(); }
+}
+
+function checkAnswer(q) {
+    return S.selectedOpts.map(i => String.fromCharCode(65 + i)).sort().join('') === q.answer;
+}
+
+function toggleWrongBook() {
+    const q = S.filtered[S.currentIdx];
+    const key = q.id || q.stem.substring(0, 60);
+    if (S.wrongBook[key]) delete S.wrongBook[key];
+    else S.wrongBook[key] = { ...q, wc: 1, lw: Date.now() };
+    saveWrongBook(); updateMiniStats();
+}
+
+function renderQuestionNav() {
+    const qs = S.filtered;
+    let html = '<div style="display:flex;flex-wrap:wrap;gap:4px">';
+    const start = Math.max(0, S.currentIdx - 30);
+    const end = Math.min(qs.length, S.currentIdx + 30);
+    if (start > 0) html += '<span style="padding:4px 8px">...</span>';
+    for (let i = start; i < end; i++) {
+        let style = 'padding:5px 10px;border-radius:5px;cursor:pointer;font-size:12px;border:1px solid var(--border)';
+        if (i === S.currentIdx) style += ';background:var(--primary);color:#fff;font-weight:bold';
+        html += `<span style="${style}" onclick="S.currentIdx=${i};S.answerState=null;S.selectedOpts=[];renderPractice()">${i+1}</span>`;
+    }
+    if (end < qs.length) html += '<span style="padding:4px 8px">...</span>';
+    html += '</div>';
+    document.getElementById('questionNav').innerHTML = html;
+}
+
+// ==================== EXAM MODE ====================
+function startExam() {
+    const count = parseInt(document.getElementById('examCount').value);
+    const timeMin = parseInt(document.getElementById('examTime').value);
+    const pool = S.filtered.length ? [...S.filtered] : [...S.questions];
+    for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+    S.exam.questions = pool.slice(0, Math.min(count, pool.length));
+    S.exam.answers = {}; S.exam.idx = 0; S.exam.timeLeft = timeMin * 60; S.exam.totalTime = timeMin * 60; S.exam.active = true;
+    document.getElementById('examSetup').classList.add('hidden');
+    document.getElementById('examRunning').classList.remove('hidden');
+    document.getElementById('examResult').classList.add('hidden');
+    renderExamQuestion();
+    if (S.exam.timer) clearInterval(S.exam.timer);
+    S.exam.timer = setInterval(() => { S.exam.timeLeft--; updateExamTimer(); if (S.exam.timeLeft <= 0) submitExam(); }, 1000);
+}
+
+function updateExamTimer() {
+    const m = Math.floor(S.exam.timeLeft / 60), s = S.exam.timeLeft % 60;
+    const el = document.getElementById('examTimer');
+    el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    el.classList.toggle('warning', S.exam.timeLeft < 300);
+    document.getElementById('examProgress').textContent = `${S.exam.idx+1}/${S.exam.questions.length}`;
+}
+
+function renderExamQuestion() {
+    if (!S.exam.questions.length) return;
+    const q = S.exam.questions[S.exam.idx];
+    const saved = S.exam.answers[S.exam.idx] || [];
+    const typeClass = q.type === '判断' ? 'judge' : q.type === '单选' ? 'single' : 'multi';
+    let html = `<div class="question-stem"><span class="q-num">#${S.exam.idx+1}/${S.exam.questions.length}</span> <span class="tag tag-${typeClass}">${q.type}题</span> <span style="color:var(--text2);font-size:11px">[${q.category}]</span><br><br>${q.stem}</div><div>`;
+    q.options.forEach((opt, i) => {
+        let cls = 'option-item';
+        if (saved.includes(i)) cls += ' selected';
+        html += `<div class="${cls}" onclick="selectExamOpt(${i})"><span class="opt-label">${String.fromCharCode(65+i)}.</span>${opt.replace(/^[A-E][、,，]\s*/, '')}</div>`;
+    });
+    html += '</div>';
+    document.getElementById('examQuestionContent').innerHTML = html;
+    renderExamSheet();
+}
+
+function selectExamOpt(idx) {
+    const q = S.exam.questions[S.exam.idx];
+    let saved = S.exam.answers[S.exam.idx] || [];
+    if (q.type === '单选' || q.type === '判断') saved = [idx];
+    else { const ei = saved.indexOf(idx); if (ei >= 0) saved.splice(ei, 1); else saved.push(idx); }
+    S.exam.answers[S.exam.idx] = saved;
+    renderExamQuestion();
+}
+
+function examPrev() { if (S.exam.idx > 0) { S.exam.idx--; renderExamQuestion(); } }
+function examNext() { if (S.exam.idx < S.exam.questions.length - 1) { S.exam.idx++; renderExamQuestion(); } }
+
+function renderExamSheet() {
+    let html = '';
+    for (let i = 0; i < S.exam.questions.length; i++) {
+        const answered = (S.exam.answers[i] || []).length > 0;
+        let style = 'width:34px;height:34px;border-radius:6px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border)';
+        if (answered) style += ';background:var(--primary);color:#fff';
+        if (i === S.exam.idx) style += ';box-shadow:0 0 0 3px var(--warning)';
+        html += `<div style="${style}" onclick="S.exam.idx=${i};renderExamQuestion()">${i+1}</div>`;
+    }
+    document.getElementById('examAnswerGrid').innerHTML = html;
+}
+
+function submitExam() {
+    if (S.exam.timer) clearInterval(S.exam.timer);
+    S.exam.active = false;
+    let correct = 0;
+    const total = S.exam.questions.length;
+    for (let i = 0; i < total; i++) {
+        const q = S.exam.questions[i];
+        const ua = (S.exam.answers[i] || []).map(idx => String.fromCharCode(65 + idx)).sort().join('');
+        if (ua === q.answer) correct++;
+        else { const key = q.id || q.stem.substring(0, 60); S.wrongBook[key] = { ...q, wc: (S.wrongBook[key]?.wc || 0) + 1, lw: Date.now() }; }
+    }
+    saveWrongBook();
+    const score = Math.round((correct / total) * 100);
+    document.getElementById('examRunning').classList.add('hidden');
+    document.getElementById('examResult').classList.remove('hidden');
+    document.getElementById('resultScore').textContent = score;
+    document.getElementById('resultDetail').textContent = `正确 ${correct} 题 / 共 ${total} 题 | 用时 ${Math.floor((S.exam.totalTime - S.exam.timeLeft)/60)}分${(S.exam.totalTime - S.exam.timeLeft)%60}秒`;
+    const bar = document.getElementById('resultBarFill'); bar.style.width = score + '%';
+    bar.style.background = score < 60 ? 'var(--danger)' : score < 80 ? 'var(--warning)' : 'var(--success)';
+}
+
+function resetExam() {
+    if (S.exam.timer) clearInterval(S.exam.timer);
+    S.exam = { active: false, questions: [], answers: {}, idx: 0, timer: null, timeLeft: 0, totalTime: 0 };
+    document.getElementById('examSetup').classList.remove('hidden');
+    document.getElementById('examRunning').classList.add('hidden');
+    document.getElementById('examResult').classList.add('hidden');
+}
+
+// ==================== WRONG BOOK ====================
+function renderWrongBook() {
+    const entries = Object.values(S.wrongBook);
+    document.getElementById('wrongEmpty').classList.toggle('hidden', entries.length > 0);
+    entries.sort((a, b) => (b.lw || 0) - (a.lw || 0));
+    let html = '';
+    entries.forEach((q, idx) => {
+        const tc = q.type === '判断' ? 'judge' : q.type === '单选' ? 'single' : 'multi';
+        html += `<div class="wrong-list-item" onclick="reviewWrong('${q.id || q.stem.substring(0,30)}')" style="display:flex;align-items:center;gap:8px">
+            <span style="color:var(--text2);font-size:12px">#${idx+1}</span>
+            <span class="tag tag-${tc}">${q.type}</span>
+            <span style="color:var(--text2);font-size:11px">[${q.category}]</span>
+            <span style="flex:1">${q.stem.substring(0,60)}...</span>
+            <span style="color:var(--danger);font-weight:600">✘${q.wc||1}</span>
+        </div>`;
+    });
+    document.getElementById('wrongList').innerHTML = html;
+}
+
+function reviewWrong(key) {
+    const q = S.wrongBook[key];
+    if (!q) return;
+    S.filtered = [q];
+    S.currentIdx = 0;
+    S.answerState = null;
+    S.selectedOpts = [];
+    switchMode('practice');
+}
+
+function clearWrongBook() {
+    if (confirm('确定要清空所有错题吗？此操作不可撤销。')) { S.wrongBook = {}; saveWrongBook(); renderWrongBook(); updateMiniStats(); }
+}
+
+// ==================== STATS ====================
+function renderStats() {
+    const cats = ['A','B','C1','C2','C3'];
+    let html = '';
+    let totQ = 0, totA = 0, totC = 0;
+    for (const cat of cats) {
+        const p = S.progress[cat] || { total: 0, correct: 0 };
+        totA += p.total; totC += p.correct;
+        const catQs = S.questions.filter(q => q.category === cat + '类').length;
+        totQ += catQs;
+        const pct = p.total > 0 ? Math.round((p.correct / p.total) * 100) : 0;
+        html += `<div class="stat-card"><div class="stat-num">${pct}%</div><div class="stat-label">${cat}类 正确率 (${p.correct}/${p.total})</div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+    }
+    html += `<div class="stat-card"><div class="stat-num">${Object.keys(S.wrongBook).length}</div><div class="stat-label">错题数</div></div>`;
+    html += `<div class="stat-card"><div class="stat-num">${totQ}</div><div class="stat-label">题库总数</div></div>`;
+    html += `<div class="stat-card"><div class="stat-num">${totA}</div><div class="stat-label">已练习</div></div>`;
+    document.getElementById('statsCards').innerHTML = html;
+
+    let detail = '';
+    for (const cat of cats) {
+        const p = S.progress[cat] || { total: 0, correct: 0, byType: {} };
+        detail += `<div style="margin:6px 0"><strong>${cat}类：</strong>`;
+        for (const type of ['判断','单选','多选']) {
+            const tp = p.byType[type] || { total: 0, correct: 0 };
+            const pct = tp.total > 0 ? Math.round((tp.correct / tp.total) * 100) : 0;
+            detail += `<span class="tag tag-${type==='判断'?'judge':type==='单选'?'single':'multi'}">${type}: ${pct}% (${tp.correct}/${tp.total})</span> `;
+        }
+        detail += '</div>';
+    }
+    document.getElementById('categoryProgress').innerHTML = detail || '<p style="color:var(--text2);padding:16px">暂无练习记录，开始刷题吧！</p>';
+}
+
+// ==================== STORAGE ====================
+function saveWrongBook() { localStorage.setItem('hnsafety_wb', JSON.stringify(S.wrongBook)); }
+function saveProgress() { localStorage.setItem('hnsafety_pr', JSON.stringify(S.progress)); }
+
+// ==================== THEME ====================
+function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme') || '';
+    const themes = ['', 'dark', 'eye']; // '' = light
+    const icons = { '': '☀️', 'dark': '🌙', 'eye': '🌿' };
+    const labels = { '': '浅色', 'dark': '深色', 'eye': '护眼' };
+    const curIdx = themes.indexOf(cur);
+    const nextIdx = (curIdx + 1) % themes.length;
+    const next = themes[nextIdx];
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('hnsafety_theme', next);
+    document.getElementById('themeIcon').textContent = icons[next];
+    document.getElementById('themeLabel').textContent = labels[next];
+}
+(function() {
+    const saved = localStorage.getItem('hnsafety_theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    const icons = { '': '☀️', 'dark': '🌙', 'eye': '🌿' };
+    const labels = { '': '浅色', 'dark': '深色', 'eye': '护眼' };
+    const cur = document.documentElement.getAttribute('data-theme') || '';
+    document.getElementById('themeIcon').textContent = icons[cur];
+    document.getElementById('themeLabel').textContent = labels[cur];
+})();
+
+// ==================== KEYBOARD ====================
+document.addEventListener('keydown', function(e) {
+    if (document.getElementById('activationModal').classList.contains('hidden') === false) return;
+    if (S.exam.active) {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); examPrev(); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); examNext(); }
+        const n = parseInt(e.key);
+        if (n >= 1 && n <= 5) { e.preventDefault(); selectExamOpt(n - 1); }
+        return;
+    }
+    if (S.mode === 'practice') {
+        if (S.answerState !== 'answered') {
+            const n = parseInt(e.key);
+            if (n >= 1 && n <= 5) { e.preventDefault(); selectOption(n - 1); }
+            if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); }
+        } else {
+            if (e.key === 'ArrowRight' || e.key === 'Enter' || e.key === ' ') { e.preventDefault(); nextQuestion(); }
+        }
+    }
+});
+
+// ==================== INIT ====================
+function initApp() {
+    mergeQuestions();
+    loadData();
+    document.getElementById('loadingView').classList.add('hidden');
+    document.getElementById('mainContent').classList.remove('hidden');
+    switchCategory('ALL');
+    switchMode('practice');
+}
+
+// Init on page load
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('machineCode').textContent = genMachineCode();
+    if (checkActivation()) {
+        document.getElementById('activationStatus').textContent = '✅ 已激活';
+        initApp();
+    } else {
+        document.getElementById('loadingView').classList.add('hidden');
+        document.getElementById('mainContent').classList.add('hidden');
+        showActivation();
+    }
+});
+</script>
+<script src="questions_A.js"></script>
+<script src="questions_B.js"></script>
+<script src="questions_C1.js"></script>
+<script src="questions_C2.js"></script>
+<script src="questions_C3.js"></script>
+</body>
+</html>
